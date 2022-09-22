@@ -3,8 +3,17 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from order.models import OrderHistory
 from order.serializers import OrderSerial
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
-
+@swagger_auto_schema(method="post", request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'account_name': openapi.Schema(type=openapi.TYPE_STRING, description="account_number"),
+        'deposit': openapi.Schema(type=openapi.TYPE_NUMBER, description="deposit"),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description="password"),
+    }),
+)
 @api_view()
 @permission_classes([IsAuthenticated])
 def all_order (request):
