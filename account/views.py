@@ -16,7 +16,14 @@ from account import resp
 
 UserModel = get_user_model()
 
-
+@swagger_auto_schema(method="post", request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description="account_number"),
+        'email': openapi.Schema(type=openapi.TYPE_NUMBER, description="deposit"),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description="password"),
+    }),
+)
 @api_view(["post"])
 @permission_classes([AllowAny])
 def usercreateview(request):
@@ -39,6 +46,14 @@ def usercreateview(request):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
 
+ @swagger_auto_schema(method="post", request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description="account_number"),
+        'deposit': openapi.Schema(type=openapi.TYPE_NUMBER, description="deposit"),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description="password"),
+    }),
+)       
 @api_view(["post"])
 @permission_classes([AllowAny])
 def authr_token(request):
@@ -58,6 +73,16 @@ def authr_token(request):
         except AttributeError:
             return resp.bad("Please enter the correct email address and password")
 
+        
+        
+@swagger_auto_schema(method="post", request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description="account_number"),
+        'email': openapi.Schema(type=openapi.TYPE_NUMBER, description="deposit"),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description="password"),
+    }),
+)        
 @api_view(["post"])
 @permission_classes([IsAuthenticated])
 def update_userinfo(request):
