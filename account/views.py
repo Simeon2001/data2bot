@@ -13,20 +13,22 @@ from django.contrib.auth import get_user_model
 from account.serializers import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from account import resp
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 UserModel = get_user_model()
 
 @swagger_auto_schema(method="post", request_body=openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties={
-        'name': openapi.Schema(type=openapi.TYPE_STRING, description="account_number"),
-        'email': openapi.Schema(type=openapi.TYPE_NUMBER, description="deposit"),
-        'password': openapi.Schema(type=openapi.TYPE_STRING, description="password"),
-    }),
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description=" input your name"),
+        'email': openapi.Schema(type=openapi.TYPE_NUMBER, description="input your email"),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description="input your password"),
+    }), operation_description="Create an Account"
 )
 @api_view(["post"])
 @permission_classes([AllowAny])
-def usercreateview(request):
+def create_account(request):
     if request.method == "POST":
         name = request.data.get("name")
         password = request.data.get("password")
@@ -46,17 +48,16 @@ def usercreateview(request):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
 
- @swagger_auto_schema(method="post", request_body=openapi.Schema(
+@swagger_auto_schema(method="post", request_body=openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties={
-        'name': openapi.Schema(type=openapi.TYPE_STRING, description="account_number"),
-        'deposit': openapi.Schema(type=openapi.TYPE_NUMBER, description="deposit"),
-        'password': openapi.Schema(type=openapi.TYPE_STRING, description="password"),
-    }),
+        'email': openapi.Schema(type=openapi.TYPE_STRING, description="input your email"),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description="input your password"),
+    }), operation_description="Sign in to get access token"
 )       
 @api_view(["post"])
 @permission_classes([AllowAny])
-def authr_token(request):
+def account_login(request):
     if request.method == "POST":
         email = request.data.get("email")
         password = request.data.get("password")
@@ -78,10 +79,9 @@ def authr_token(request):
 @swagger_auto_schema(method="post", request_body=openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties={
-        'name': openapi.Schema(type=openapi.TYPE_STRING, description="account_number"),
-        'email': openapi.Schema(type=openapi.TYPE_NUMBER, description="deposit"),
-        'password': openapi.Schema(type=openapi.TYPE_STRING, description="password"),
-    }),
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description="input your name"),
+        'email': openapi.Schema(type=openapi.TYPE_NUMBER, description="input your email"),
+    }), operation_description="To update your name or email address"
 )        
 @api_view(["post"])
 @permission_classes([IsAuthenticated])
